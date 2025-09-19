@@ -966,8 +966,8 @@
             }
             
             function goToDashboard() {
-                // In a real application, this would redirect to the user dashboard
-                alert('Redirecting to dashboard...');
+                // Set the user as logged in
+                localStorage.setItem('isLoggedIn', 'true');
                 window.location.href = 'dashboard.html';
             }
             
