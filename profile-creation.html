@@ -186,13 +186,16 @@
         /* Main Content */
         .main-content {
             display: flex;
+            flex-direction: column;
+            align-items: center;
             gap: 2rem;
             margin: 2rem 0;
         }
         
         /* Profile Creation Section */
         .profile-creation {
-            flex: 2;
+            width: 100%;
+            max-width: 800px;
             background: white;
             border-radius: 15px;
             padding: 2rem;
@@ -333,14 +336,12 @@
         
         /* Profile Preview */
         .profile-preview {
-            flex: 1;
+            width: 100%;
+            max-width: 800px;
             background: white;
             border-radius: 15px;
             padding: 2rem;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 100px;
-            align-self: flex-start;
         }
         
         .preview-header {
@@ -394,14 +395,26 @@
         }
         
         /* Responsive Design */
-        @media (max-width: 900px) {
+        @media (min-width: 901px) {
             .main-content {
-                flex-direction: column;
+                display: grid;
+                grid-template-columns: 1fr;
+                justify-items: center;
             }
             
             .profile-preview {
-                position: relative;
-                top: 0;
+                margin-top: 2rem;
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .main-content {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .profile-preview {
+                max-width: 800px;
             }
             
             nav ul {
@@ -692,85 +705,85 @@
                     
                     <div class="form-group">
                         <label for="male-madhab" class="required">Islamic School of Thought</label>
-                        <select id="male-madhab" required>
-                            <option value="">Select preference</option>
-                            <option value="hanafi">Hanafi</option>
-                            <option value="maliki">Maliki</option>
-                            <option value="shafi">Shafi'i</option>
-                            <option value="hanbali">Hanbali</option>
-                            <option value="none">No preference</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="male-bio" class="required">About Me</label>
-                        <textarea id="male-bio" rows="4" required placeholder="Tell about yourself, your interests, and what you're looking for in a partner"></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="male-expectations" class="required">Partner Expectations</label>
-                        <textarea id="male-expectations" rows="3" required placeholder="What are you looking for in a partner?"></textarea>
-                    </div>
-                    
-                    <button type="submit" class="btn btn-primary">Create Profile</button>
-                </form>
-            </div>
-            
-            <!-- Female Form -->
-            <div id="female-form" class="form-container">
-                <form id="femaleProfileForm">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="female-name" class="required">Full Name</label>
-                            <input type="text" id="female-name" required placeholder="Your full name">
-                        </div>
-                        <div class="form-group">
-                            <label for="female-age" class="required">Age</label>
-                            <input type="number" id="female-age" min="18" max="80" required placeholder="Your age">
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="female-occupation">Occupation</label>
-                            <input type="text" id="female-occupation" placeholder="Your profession (optional)">
-                        </div>
-                        <div class="form-group">
-                            <label for="female-education" class="required">Education</label>
-                            <select id="female-education" required>
-                                <option value="">Select education level</option>
-                                <option value="high-school">High School</option>
-                                <option value="bachelor">Bachelor's Degree</option>
-                                <option value="master">Master's Degree</option>
-                                <option value="phd">PhD</option>
-                                <option value="other">Other</option>
+                            <select id="male-madhab" required>
+                                <option value="">Select preference</option>
+                                <option value="hanafi">Hanafi</option>
+                                <option value="maliki">Maliki</option>
+                                <option value="shafi">Shafi'i</option>
+                                <option value="hanbali">Hanbali</option>
+                                <option value="none">No preference</option>
                             </select>
                         </div>
-                    </div>
-                    
-                    <div class="form-row">
+                        
                         <div class="form-group">
-                            <label for="female-marital" class="required">Marital Status</label>
-                            <select id="female-marital" required>
-                                <option value="">Select status</option>
-                                <option value="never-married">Never Married</option>
-                                <option value="divorced">Divorced</option>
-                                <option value="widowed">Widowed</option>
-                            </select>
+                            <label for="male-bio" class="required">About Me</label>
+                            <textarea id="male-bio" rows="4" required placeholder="Tell about yourself, your interests, and what you're looking for in a partner"></textarea>
                         </div>
+                        
                         <div class="form-group">
-                            <label for="female-height">Height</label>
-                            <input type="text" id="female-height" placeholder="Height in cm (optional)">
+                            <label for="male-expectations" class="required">Partner Expectations</label>
+                            <textarea id="male-expectations" rows="3" required placeholder="What are you looking for in a partner?"></textarea>
                         </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="female-ethnicity">Ethnicity</label>
-                        <input type="text" id="female-ethnicity" placeholder="Your ethnicity (optional)">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="female-hijab" class="required">Hijab</label>
+                        
+                        <button type="submit" class="btn btn-primary">Create Profile</button>
+                    </form>
+                </div>
+                
+                <!-- Female Form -->
+                <div id="female-form" class="form-container">
+                    <form id="femaleProfileForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="female-name" class="required">Full Name</label>
+                                <input type="text" id="female-name" required placeholder="Your full name">
+                            </div>
+                            <div class="form-group">
+                                <label for="female-age" class="required">Age</label>
+                                <input type="number" id="female-age" min="18" max="80" required placeholder="Your age">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="female-occupation">Occupation</label>
+                                <input type="text" id="female-occupation" placeholder="Your profession (optional)">
+                            </div>
+                            <div class="form-group">
+                                <label for="female-education" class="required">Education</label>
+                                <select id="female-education" required>
+                                    <option value="">Select education level</option>
+                                    <option value="high-school">High School</option>
+                                    <option value="bachelor">Bachelor's Degree</option>
+                                    <option value="master">Master's Degree</option>
+                                    <option value="phd">PhD</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="female-marital" class="required">Marital Status</label>
+                                <select id="female-marital" required>
+                                    <option value="">Select status</option>
+                                    <option value="never-married">Never Married</option>
+                                    <option value="divorced">Divorced</option>
+                                    <option value="widowed">Widowed</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="female-height">Height</label>
+                                <input type="text" id="female-height" placeholder="Height in cm (optional)">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="female-ethnicity">Ethnicity</label>
+                            <input type="text" id="female-ethnicity" placeholder="Your ethnicity (optional)">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="female-hijab" class="required">Hijab</label>
                             <select id="female-hijab" required>
                                 <option value="">Select</option>
                                 <option value="yes">Yes</option>
