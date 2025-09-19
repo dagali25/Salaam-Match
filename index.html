@@ -691,7 +691,10 @@
         <div class="container hero-content">
             <h2>Meaningful Connections in a Halal Way</h2>
             <p>SalaamMatch helps Muslim singles find their life partners with dignity, safety, and Islamic values. Skip the endless chats and arrange respectful meetings at trusted locations.</p>
-            <button class="btn btn-primary" onclick="window.location.href='profile-creation.html'">Create Profile</button>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="window.location.href='profile-creation.html'">Create Profile</button>
+                <button class="btn btn-outline" id="heroLoginBtn">Login to Account</button>
+            </div>
         </div>
     </section>
     
@@ -966,6 +969,7 @@
             const loginModal = document.getElementById('loginModal');
             const loginBtn = document.getElementById('loginBtn');
             const mobileLoginBtn = document.getElementById('mobileLoginBtn');
+            const heroLoginBtn = document.getElementById('heroLoginBtn');
             const loginForm = document.getElementById('loginForm');
             
             let lastScrollY = window.scrollY;
@@ -1034,6 +1038,10 @@
                 menuToggle.querySelector('i').classList.add('fa-bars');
             });
             
+            heroLoginBtn.addEventListener('click', function() {
+                loginModal.style.display = 'flex';
+            });
+            
             // Close modal when clicking outside
             window.addEventListener('click', function(event) {
                 if (event.target === loginModal) {
@@ -1052,6 +1060,7 @@
                 document.getElementById('mobileDashboardLink').style.display = 'block';
                 loginBtn.style.display = 'none';
                 mobileLoginBtn.style.display = 'none';
+                heroLoginBtn.style.display = 'none';
                 alert('Login successful! You can now access your dashboard.');
             });
             
@@ -1061,6 +1070,7 @@
                 document.getElementById('mobileDashboardLink').style.display = 'block';
                 loginBtn.style.display = 'none';
                 mobileLoginBtn.style.display = 'none';
+                heroLoginBtn.style.display = 'none';
             }
             
             // Add smooth scrolling for navigation links with proper section IDs
