@@ -566,6 +566,11 @@
             background: var(--accent);
             transform: translateY(-5px);
         }
+
+        /* Section IDs for navigation */
+        #how-it-works, #trusted-locations, #success-stories, #about-us {
+            scroll-margin-top: 100px;
+        }
     </style>
 </head>
 <body>
@@ -583,11 +588,11 @@
             
             <nav id="nav">
                 <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">How It Works</a></li>
-                    <li><a href="#">Trusted Locations</a></li>
-                    <li><a href="#">Success Stories</a></li>
-                    <li><a href="#">About Us</a></li>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#how-it-works">How It Works</a></li>
+                    <li><a href="#trusted-locations">Trusted Locations</a></li>
+                    <li><a href="#success-stories">Success Stories</a></li>
+                    <li><a href="#about-us">About Us</a></li>
                 </ul>
                 
                 <div class="mobile-auth">
@@ -604,7 +609,7 @@
     </header>
     
     <!-- Hero Section -->
-    <section class="hero">
+    <section class="hero" id="home">
         <div class="container hero-content">
             <h2>Meaningful Connections in a Halal Way</h2>
             <p>SalaamMatch helps Muslim singles find their life partners with dignity, safety, and Islamic values. Skip the endless chats and arrange respectful meetings at trusted locations.</p>
@@ -643,7 +648,7 @@
     </section>
     
     <!-- How It Works -->
-    <section class="how-it-works">
+    <section class="how-it-works" id="how-it-works">
         <div class="container">
             <div class="section-title">
                 <h2>How It Works</h2>
@@ -679,7 +684,7 @@
     </section>
     
     <!-- Trusted Locations -->
-    <section class="locations">
+    <section class="locations" id="trusted-locations">
         <div class="container">
             <div class="section-title">
                 <h2>Trusted Location Partners</h2>
@@ -718,7 +723,7 @@
     </section>
     
     <!-- Testimonials -->
-    <section class="testimonials">
+    <section class="testimonials" id="success-stories">
         <div class="container">
             <div class="section-title">
                 <h2>Success Stories</h2>
@@ -767,6 +772,36 @@
             </div>
         </div>
     </section>
+
+    <!-- About Us Section -->
+    <section class="features" id="about-us">
+        <div class="container">
+            <div class="section-title">
+                <h2>About Us</h2>
+                <p>Our mission to facilitate halal matchmaking</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-hand-holding-heart"></i>
+                    <h3>Our Mission</h3>
+                    <p>To provide a safe, respectful platform for Muslims to find life partners while upholding Islamic values and traditions.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-values"></i>
+                    <h3>Our Values</h3>
+                    <p>We prioritize privacy, safety, and Islamic principles in every aspect of our matchmaking service.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-eye"></i>
+                    <h3>Our Vision</h3>
+                    <p>To become the most trusted Islamic matchmaking service worldwide, fostering lasting marriages built on strong foundations.</p>
+                </div>
+            </div>
+        </div>
+    </section>
     
     <!-- Footer -->
     <footer>
@@ -786,11 +821,11 @@
                 <div class="footer-section">
                     <h3>Quick Links</h3>
                     <ul>
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">How It Works</a></li>
-                        <li><a href="#">Trusted Locations</a></li>
-                        <li><a href="#">Success Stories</a></li>
-                        <li><a href="#">About Us</a></li>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#how-it-works">How It Works</a></li>
+                        <li><a href="#trusted-locations">Trusted Locations</a></li>
+                        <li><a href="#success-stories">Success Stories</a></li>
+                        <li><a href="#about-us">About Us</a></li>
                     </ul>
                 </div>
                 
@@ -893,16 +928,24 @@
                 alert('Welcome to SalaamMatch! Registration page would open here.');
             });
             
-            // Add smooth scrolling for navigation links
-            document.querySelectorAll('nav a').forEach(anchor => {
+            // Add smooth scrolling for navigation links with proper section IDs
+            document.querySelectorAll('nav a, .footer-section a').forEach(anchor => {
                 anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
+                    const href = this.getAttribute('href');
                     
-                    const targetId = this.getAttribute('href');
-                    if(targetId !== '#') {
-                        document.querySelector(targetId).scrollIntoView({
-                            behavior: 'smooth'
-                        });
+                    // Only process internal links starting with #
+                    if (href.startsWith('#')) {
+                        e.preventDefault();
+                        
+                        const targetId = href.substring(1);
+                        if (targetId) {
+                            const targetElement = document.getElementById(targetId);
+                            if (targetElement) {
+                                targetElement.scrollIntoView({
+                                    behavior: 'smooth'
+                                });
+                            }
+                        }
                     }
                 });
             });
