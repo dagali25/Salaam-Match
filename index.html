@@ -110,6 +110,13 @@
         .auth-buttons {
             display: flex;
             gap: 1rem;
+            align-items: center;
+        }
+        
+        .auth-buttons a.btn {
+            display: inline-block;
+            text-decoration: none;
+            text-align: center;
         }
         
         .btn {
@@ -571,6 +578,73 @@
         #how-it-works, #trusted-locations, #success-stories, #about-us {
             scroll-margin-top: 100px;
         }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .modal-content h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        .modal-content p {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+        
+        .modal-content a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .modal-content a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -596,14 +670,18 @@
                 </ul>
                 
                 <div class="mobile-auth">
-                    <button class="btn btn-outline">Login</button>
-                    <button class="btn btn-primary">Sign Up</button>
+                    <button class="btn btn-outline" id="mobileLoginBtn">Login</button>
+                    <button class="btn btn-primary" onclick="window.location.href='profile-creation.html'">Create Profile</button>
+                    <!-- Add a dashboard link that will be visible after login -->
+                    <a href="dashboard.html" class="btn btn-outline" id="mobileDashboardLink" style="display: none;">Dashboard</a>
                 </div>
             </nav>
             
             <div class="auth-buttons">
-                <button class="btn btn-outline">Login</button>
-                <button class="btn btn-primary">Sign Up</button>
+                <button class="btn btn-outline" id="loginBtn">Login</button>
+                <button class="btn btn-primary" onclick="window.location.href='profile-creation.html'">Create Profile</button>
+                <!-- Add a dashboard link that will be visible after login -->
+                <a href="dashboard.html" class="btn btn-outline" id="dashboardLink" style="display: none;">Dashboard</a>
             </div>
         </div>
     </header>
@@ -613,7 +691,7 @@
         <div class="container hero-content">
             <h2>Meaningful Connections in a Halal Way</h2>
             <p>SalaamMatch helps Muslim singles find their life partners with dignity, safety, and Islamic values. Skip the endless chats and arrange respectful meetings at trusted locations.</p>
-            <button class="btn btn-primary"><a href="profile-creation.html" class="btn btn-primary">Create Profile</a></button>
+            <button class="btn btn-primary" onclick="window.location.href='profile-creation.html'">Create Profile</button>
         </div>
     </section>
     
@@ -789,7 +867,7 @@
                 </div>
                 
                 <div class="feature-card">
-                    <i class="fas fa-values"></i>
+                    <i class="fas fa-star-of-david"></i>
                     <h3>Our Values</h3>
                     <p>We prioritize privacy, safety, and Islamic principles in every aspect of our matchmaking service.</p>
                 </div>
@@ -855,6 +933,25 @@
         </div>
     </footer>
 
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <h2>Login to SalaamMatch</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+            <p>Don't have an account? <a href="profile-creation.html">Create one</a></p>
+        </div>
+    </div>
+
     <div class="scroll-to-top" id="scrollToTop">
         <i class="fas fa-arrow-up"></i>
     </div>
@@ -866,6 +963,10 @@
             const menuToggle = document.getElementById('menuToggle');
             const nav = document.getElementById('nav');
             const scrollToTop = document.getElementById('scrollToTop');
+            const loginModal = document.getElementById('loginModal');
+            const loginBtn = document.getElementById('loginBtn');
+            const mobileLoginBtn = document.getElementById('mobileLoginBtn');
+            const loginForm = document.getElementById('loginForm');
             
             let lastScrollY = window.scrollY;
             
@@ -921,12 +1022,46 @@
                 });
             });
             
-            // Sign up button functionality
-            const signUpBtn = document.querySelector('.btn-primary');
-            
-            signUpBtn.addEventListener('click', function() {
-                alert('Welcome to SalaamMatch! Registration page would open here.');
+            // Login modal functionality
+            loginBtn.addEventListener('click', function() {
+                loginModal.style.display = 'flex';
             });
+            
+            mobileLoginBtn.addEventListener('click', function() {
+                loginModal.style.display = 'flex';
+                nav.classList.remove('active');
+                menuToggle.querySelector('i').classList.remove('fa-times');
+                menuToggle.querySelector('i').classList.add('fa-bars');
+            });
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', function(event) {
+                if (event.target === loginModal) {
+                    loginModal.style.display = 'none';
+                }
+            });
+            
+            // Login form submission
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                // In a real app, you would verify credentials with a server
+                // For demo purposes, we'll just simulate a successful login
+                localStorage.setItem('isLoggedIn', 'true');
+                loginModal.style.display = 'none';
+                document.getElementById('dashboardLink').style.display = 'inline-block';
+                document.getElementById('mobileDashboardLink').style.display = 'block';
+                loginBtn.style.display = 'none';
+                mobileLoginBtn.style.display = 'none';
+                alert('Login successful! You can now access your dashboard.');
+            });
+            
+            // Check if user is already logged in
+            if (localStorage.getItem('isLoggedIn') === 'true') {
+                document.getElementById('dashboardLink').style.display = 'inline-block';
+                document.getElementById('mobileDashboardLink').style.display = 'block';
+                loginBtn.style.display = 'none';
+                mobileLoginBtn.style.display = 'none';
+            }
             
             // Add smooth scrolling for navigation links with proper section IDs
             document.querySelectorAll('nav a, .footer-section a').forEach(anchor => {
