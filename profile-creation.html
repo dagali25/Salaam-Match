@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SalaamMatch - Islamic Matchmaking Service</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #2D5016;
+            --secondary: #E8F5E9;
+            --accent: #8BC34A;
+            --light: #F5F5F5;
+            --dark: #1E2A1A;
+            --text: #333333;
+            --male: #3498db;
+            --female: #e91e63;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--text);
+            line-height: 1.6;
+            padding-top: 80px;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+        
+        header.hide {
+            transform: translateY(-100%);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: white;
+        }
+        
+        .logo i {
+            font-size: 2rem;
+        }
+        
+        .logo h1 {
+            font-size: 1.8rem;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+        
+        nav a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--accent);
+            transition: width 0.3s;
+        }
+        
+        nav a:hover:after {
+            width: 100%;
+        }
+        
+        nav a:hover {
+            color: var(--accent);
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .btn {
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+        }
+        
+        .btn-outline:hover {
+            background: white;
+            color: var(--primary);
+        }
+        
+        .btn-primary {
+            background: var(--accent);
+            color: var(--dark);
+        }
+        
+        .btn-primary:hover {
+            background: #7CB342;
+            transform: translateY(-2px);
+        }
+        
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(45, 80, 22, 0.8), rgba(45, 80, 22, 0.8)), url('https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 5rem 0;
+            text-align: center;
+            border-radius: 0 0 20px 20px;
+            margin-bottom: 3rem;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        
+        /* Main Content */
+        .main-content {
+            display: flex;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        /* Profile Creation Section */
+        .profile-creation {
+            flex: 2;
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--primary);
+            position: relative;
+            padding-bottom: 1rem;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: var(--accent);
+        }
+        
+        .section-title h2 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Gender Selection */
+        .gender-selection {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .gender-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 150px;
+            text-align: center;
+            border: 2px solid #ddd;
+        }
+        
+        .gender-option.male {
+            border-color: var(--male);
+        }
+        
+        .gender-option.female {
+            border-color: var(--female);
+        }
+        
+        .gender-option.selected {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .gender-option.male.selected {
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+        
+        .gender-option.female.selected {
+            background-color: rgba(233, 30, 99, 0.1);
+        }
+        
+        .gender-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .male .gender-icon {
+            color: var(--male);
+        }
+        
+        .female .gender-icon {
+            color: var(--female);
+        }
+        
+        /* Form Styles */
+        .form-container {
+            display: none;
+        }
+        
+        .form-container.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--accent);
+            outline: none;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        .form-requirements {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 0.3rem;
+        }
+        
+        /* Profile Preview */
+        .profile-preview {
+            flex: 1;
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 100px;
+            align-self: flex-start;
+        }
+        
+        .preview-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--primary);
+        }
+        
+        .preview-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .preview-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            border: 3px solid var(--accent);
+        }
+        
+        .preview-avatar i {
+            font-size: 4rem;
+            color: var(--primary);
+        }
+        
+        .preview-details {
+            width: 100%;
+        }
+        
+        .preview-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .preview-item:last-child {
+            border-bottom: none;
+        }
+        
+        .preview-label {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .profile-preview {
+                position: relative;
+                top: 0;
+            }
+            
+            nav ul {
+                gap: 1rem;
+            }
+            
+            .hero h2 {
+                font-size: 2.5rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+            
+            nav {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 80px);
+                background: var(--primary);
+                transition: left 0.3s ease;
+                overflow-y: auto;
+            }
+            
+            nav.active {
+                left: 0;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                padding: 2rem;
+                gap: 0;
+            }
+            
+            nav li {
+                width: 100%;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            
+            nav a {
+                display: block;
+                padding: 1rem 0;
+                font-size: 1.2rem;
+            }
+            
+            .auth-buttons {
+                display: none;
+            }
+            
+            .mobile-auth {
+                display: flex;
+                flex-direction: column;
+                padding: 0 2rem 2rem;
+                gap: 1rem;
+            }
+            
+            .hero h2 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .gender-selection {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .gender-option {
+                width: 100%;
+                max-width: 250px;
+            }
+        }
+        
+        .mobile-auth {
+            display: none;
+        }
+        
+        @media (max-width: 480px) {
+            .logo h1 {
+                font-size: 1.5rem;
+            }
+            
+            .hero h2 {
+                font-size: 1.8rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+        }
+        
+        .required:after {
+            content: ' *';
+            color: #e74c3c;
+        }
+        
+        .islamic-pattern {
+            background-color: var(--primary);
+            background-image: linear-gradient(30deg, var(--secondary) 12%, transparent 12.5%, transparent 87%, var(--secondary) 87.5%, var(--secondary)),
+                              linear-gradient(150deg, var(--secondary) 12%, transparent 12.5%, transparent 87%, var(--secondary) 87.5%, var(--secondary)),
+                              linear-gradient(30deg, var(--secondary) 12%, transparent 12.5%, transparent 87%, var(--secondary) 87.5%, var(--secondary)),
+                              linear-gradient(150deg, var(--secondary) 12%, transparent 12.5%, transparent 87%, var(--secondary) 87.5%, var(--secondary)),
+                              linear-gradient(60deg, var(--accent) 25%, transparent 25.5%, transparent 75%, var(--accent) 75%, var(--accent)),
+                              linear-gradient(60deg, var(--accent) 25%, transparent 25.5%, transparent 75%, var(--accent) 75%, var(--accent));
+            background-size: 40px 70px;
+            background-position: 0 0, 0 0, 20px 35px, 20px 35px, 0 0, 20px 35px;
+            height: 10px;
+            border-radius: 5px 5px 0 0;
+            margin: -2rem -2rem 2rem -2rem;
+        }
+        
+        /* Success Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+        }
+        
+        .modal-icon {
+            font-size: 4rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header id="header">
+        <div class="container header-content">
+            <a href="index.html" class="logo">
+                <i class="fas fa-mosque"></i>
+                <h1>SalaamMatch</h1>
+            </a>
+            
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <nav id="nav">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="how-it-works.html">How It Works</a></li>
+                    <li><a href="trusted-locations.html">Trusted Locations</a></li>
+                    <li><a href="success-stories.html">Success Stories</a></li>
+                    <li><a href="about-us.html">About Us</a></li>
+                </ul>
+                
+                <div class="mobile-auth">
+                    <button class="btn btn-outline">Login</button>
+                    <button class="btn btn-primary">Sign Up</button>
+                </div>
+            </nav>
+            
+            <div class="auth-buttons">
+                <button class="btn btn-outline">Login</button>
+                <button class="btn btn-primary" onclick="window.location.href='profile-creation.html'">Create Profile</button>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container hero-content">
+            <h2>Create Your Islamic Matchmaking Profile</h2>
+            <p>Join our community of practicing Muslims seeking meaningful relationships in a halal way</p>
+        </div>
+    </section>
+    
+    <!-- Main Content -->
+    <div class="container main-content">
+        <!-- Profile Creation Section -->
+        <section class="profile-creation">
+            <div class="islamic-pattern"></div>
+            <div class="section-title">
+                <h2>Create Your Profile</h2>
+                <p>Begin your journey to find a compatible partner</p>
+            </div>
+            
+            <!-- Gender Selection -->
+            <div class="gender-selection">
+                <div class="gender-option male" onclick="selectGender('male')">
+                    <i class="gender-icon fas fa-male"></i>
+                    <h3>Male</h3>
+                    <p>Create a brother's profile</p>
+                </div>
+                <div class="gender-option female" onclick="selectGender('female')">
+                    <i class="gender-icon fas fa-female"></i>
+                    <h3>Female</h3>
+                    <p>Create a sister's profile</p>
+                </div>
+            </div>
+            
+            <!-- Male Form -->
+            <div id="male-form" class="form-container">
+                <form id="maleProfileForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="male-name" class="required">Full Name</label>
+                            <input type="text" id="male-name" required placeholder="Your full name">
+                        </div>
+                        <div class="form-group">
+                            <label for="male-age" class="required">Age</label>
+                            <input type="number" id="male-age" min="18" max="80" required placeholder="Your age">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="male-occupation" class="required">Occupation</label>
+                            <input type="text" id="male-occupation" required placeholder="Your profession">
+                        </div>
+                        <div class="form-group">
+                            <label for="male-education" class="required">Education</label>
+                            <select id="male-education" required>
+                                <option value="">Select education level</option>
+                                <option value="high-school">High School</option>
+                                <option value="bachelor">Bachelor's Degree</option>
+                                <option value="master">Master's Degree</option>
+                                <option value="phd">PhD</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="male-marital" class="required">Marital Status</label>
+                            <select id="male-marital" required>
+                                <option value="">Select status</option>
+                                <option value="never-married">Never Married</option>
+                                <option value="divorced">Divorced</option>
+                                <option value="widowed">Widowed</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="male-height" class="required">Height</label>
+                            <input type="text" id="male-height" required placeholder="Height in cm">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="male-ethnicity" class="required">Ethnicity</label>
+                        <input type="text" id="male-ethnicity" required placeholder="Your ethnicity">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="male-religious" class="required">Religious Practice</label>
+                        <select id="male-religious" required>
+                            <option value="">Select level</option>
+                            <option value="practicing">Practicing</option>
+                            <option value="moderate">Moderate</option>
+                            <option value="revert">Revert</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="male-madhab" class="required">Islamic School of Thought</label>
+                        <select id="male-madhab" required>
+                            <option value="">Select preference</option>
+                            <option value="hanafi">Hanafi</option>
+                            <option value="maliki">Maliki</option>
+                            <option value="shafi">Shafi'i</option>
+                            <option value="hanbali">Hanbali</option>
+                            <option value="none">No preference</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="male-bio" class="required">About Me</label>
+                        <textarea id="male-bio" rows="4" required placeholder="Tell about yourself, your interests, and what you're looking for in a partner"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="male-expectations" class="required">Partner Expectations</label>
+                        <textarea id="male-expectations" rows="3" required placeholder="What are you looking for in a partner?"></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Create Profile</button>
+                </form>
+            </div>
+            
+            <!-- Female Form -->
+            <div id="female-form" class="form-container">
+                <form id="femaleProfileForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="female-name" class="required">Full Name</label>
+                            <input type="text" id="female-name" required placeholder="Your full name">
+                        </div>
+                        <div class="form-group">
+                            <label for="female-age" class="required">Age</label>
+                            <input type="number" id="female-age" min="18" max="80" required placeholder="Your age">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="female-occupation">Occupation</label>
+                            <input type="text" id="female-occupation" placeholder="Your profession (optional)">
+                        </div>
+                        <div class="form-group">
+                            <label for="female-education" class="required">Education</label>
+                            <select id="female-education" required>
+                                <option value="">Select education level</option>
+                                <option value="high-school">High School</option>
+                                <option value="bachelor">Bachelor's Degree</option>
+                                <option value="master">Master's Degree</option>
+                                <option value="phd">PhD</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="female-marital" class="required">Marital Status</label>
+                            <select id="female-marital" required>
+                                <option value="">Select status</option>
+                                <option value="never-married">Never Married</option>
+                                <option value="divorced">Divorced</option>
+                                <option value="widowed">Widowed</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="female-height">Height</label>
+                            <input type="text" id="female-height" placeholder="Height in cm (optional)">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="female-ethnicity">Ethnicity</label>
+                        <input type="text" id="female-ethnicity" placeholder="Your ethnicity (optional)">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="female-hijab" class="required">Hijab</label>
+                            <select id="female-hijab" required>
+                                <option value="">Select</option>
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="female-religious" class="required">Religious Practice</label>
+                            <select id="female-religious" required>
+                                <option value="">Select level</option>
+                                <option value="practicing">Practicing</option>
+                                <option value="moderate">Moderate</option>
+                                <option value="revert">Revert</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="female-madhab">Islamic School of Thought</label>
+                            <select id="female-madhab">
+                                <option value="">Select preference (optional)</option>
+                                <option value="hanafi">Hanafi</option>
+                                <option value="maliki">Maliki</option>
+                                <option value="shafi">Shafi'i</option>
+                                <option value="hanbali">Hanbali</option>
+                                <option value="none">No preference</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="female-bio" class="required">About Me</label>
+                            <textarea id="female-bio" rows="4" required placeholder="Tell about yourself, your interests, and what you're looking for in a partner"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="female-expectations">Partner Expectations</label>
+                            <textarea id="female-expectations" rows="3" placeholder="What are you looking for in a partner? (optional)"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="female-mahram" class="required">Mahram Contact</label>
+                            <input type="text" id="female-mahram" required placeholder="Name of mahram for communication">
+                            <div class="form-requirements">For your safety and Islamic guidelines, a mahram will be involved in initial communications</div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Create Profile</button>
+                    </form>
+                </div>
+            </section>
+            
+            <!-- Profile Preview -->
+            <aside class="profile-preview">
+                <div class="preview-header">
+                    <h3>Profile Preview</h3>
+                    <p>Your profile will appear like this</p>
+                </div>
+                
+                <div class="preview-content">
+                    <div class="preview-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    
+                    <div class="preview-details">
+                        <div class="preview-item">
+                            <span class="preview-label">Name:</span>
+                            <span id="preview-name">Not specified</span>
+                        </div>
+                        <div class="preview-item">
+                            <span class="preview-label">Age:</span>
+                            <span id="preview-age">Not specified</span>
+                        </div>
+                        <div class="preview-item">
+                            <span class="preview-label">Gender:</span>
+                            <span id="preview-gender">Not specified</span>
+                        </div>
+                        <div class="preview-item">
+                            <span class="preview-label">Occupation:</span>
+                            <span id="preview-occupation">Not specified</span>
+                        </div>
+                        <div class="preview-item">
+                            <span class="preview-label">Religious Practice:</span>
+                            <span id="preview-religious">Not specified</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+        
+        <!-- Success Modal -->
+        <div class="modal" id="successModal">
+            <div class="modal-content">
+                <i class="modal-icon fas fa-check-circle"></i>
+                <h2>Profile Created Successfully!</h2>
+                <p>Your profile has been created and is now active. You can now browse potential matches or complete your profile with additional details.</p>
+                <div class="modal-buttons">
+                    <button class="btn btn-outline" onclick="closeModal()">Edit Profile</button>
+                    <button class="btn btn-primary" onclick="goToDashboard()">Go to Dashboard</button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // Function to select gender and show appropriate form
+            function selectGender(gender) {
+                // Remove selected class from all options
+                document.querySelectorAll('.gender-option').forEach(option => {
+                    option.classList.remove('selected');
+                });
+                
+                // Add selected class to clicked option
+                document.querySelector(`.gender-option.${gender}`).classList.add('selected');
+                
+                // Hide all forms
+                document.querySelectorAll('.form-container').forEach(form => {
+                    form.classList.remove('active');
+                });
+                
+                // Show the selected form
+                document.getElementById(`${gender}-form`).classList.add('active');
+                
+                // Update preview
+                document.getElementById('preview-gender').textContent = gender.charAt(0).toUpperCase() + gender.slice(1);
+                
+                // Update avatar icon
+                const avatarIcon = document.querySelector('.preview-avatar i');
+                avatarIcon.className = gender === 'male' ? 'fas fa-male' : 'fas fa-female';
+            }
+            
+            // Function to update profile preview as user types
+            function setupFormListeners() {
+                // Male form listeners
+                const maleForm = document.getElementById('maleProfileForm');
+                if (maleForm) {
+                    maleForm.querySelectorAll('input, select, textarea').forEach(element => {
+                        element.addEventListener('input', updatePreview);
+                    });
+                }
+                
+                // Female form listeners
+                const femaleForm = document.getElementById('femaleProfileForm');
+                if (femaleForm) {
+                    femaleForm.querySelectorAll('input, select, textarea').forEach(element => {
+                        element.addEventListener('input', updatePreview);
+                    });
+                }
+            }
+            
+            // Update preview function
+            function updatePreview() {
+                const activeForm = document.querySelector('.form-container.active');
+                if (!activeForm) return;
+                
+                if (activeForm.id === 'male-form') {
+                    document.getElementById('preview-name').textContent = document.getElementById('male-name').value || 'Not specified';
+                    document.getElementById('preview-age').textContent = document.getElementById('male-age').value || 'Not specified';
+                    document.getElementById('preview-occupation').textContent = document.getElementById('male-occupation').value || 'Not specified';
+                    document.getElementById('preview-religious').textContent = document.getElementById('male-religious').value || 'Not specified';
+                } else {
+                    document.getElementById('preview-name').textContent = document.getElementById('female-name').value || 'Not specified';
+                    document.getElementById('preview-age').textContent = document.getElementById('female-age').value || 'Not specified';
+                    document.getElementById('preview-occupation').textContent = document.getElementById('female-occupation').value || 'Not specified';
+                    document.getElementById('preview-religious').textContent = document.getElementById('female-religious').value || 'Not specified';
+                }
+            }
+            
+            // Form submission handlers
+            document.getElementById('maleProfileForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                document.getElementById('successModal').style.display = 'flex';
+            });
+            
+            document.getElementById('femaleProfileForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                document.getElementById('successModal').style.display = 'flex';
+            });
+            
+            // Modal functions
+            function closeModal() {
+                document.getElementById('successModal').style.display = 'none';
+            }
+            
+            function goToDashboard() {
+                // In a real application, this would redirect to the user dashboard
+                alert('Redirecting to dashboard...');
+                window.location.href = 'dashboard.html';
+            }
+            
+            // Initialize on page load
+            window.onload = function() {
+                // Select male by default
+                selectGender('male');
+                
+                // Set up form listeners
+                setupFormListeners();
+                
+                // Header scroll behavior
+                const header = document.getElementById('header');
+                let lastScrollY = window.scrollY;
+                
+                window.addEventListener('scroll', function() {
+                    if (window.scrollY > lastScrollY && window.scrollY > 200) {
+                        header.classList.add('hide');
+                    } else {
+                        header.classList.remove('hide');
+                    }
+                    
+                    lastScrollY = window.scrollY;
+                });
+                
+                // Mobile menu toggle
+                const menuToggle = document.getElementById('menuToggle');
+                const nav = document.getElementById('nav');
+                
+                menuToggle.addEventListener('click', function() {
+                    nav.classList.toggle('active');
+                    
+                    const icon = menuToggle.querySelector('i');
+                    if (nav.classList.contains('active')) {
+                        icon.classList.remove('fa-bars');
+                        icon.classList.add('fa-times');
+                    } else {
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    }
+                });
+                
+                // Close mobile menu when clicking on a link
+                document.querySelectorAll('nav a').forEach(link => {
+                    link.addEventListener('click', function() {
+                        nav.classList.remove('active');
+                        menuToggle.querySelector('i').classList.remove('fa-times');
+                        menuToggle.querySelector('i').classList.add('fa-bars');
+                    });
+                });
+            };
+            
+            // Close modal if clicked outside
+            window.addEventListener('click', function(event) {
+                const modal = document.getElementById('successModal');
+                if (event.target === modal) {
+                    closeModal();
+                }
+            });
+        </script>
+    </body>
+    </html>
