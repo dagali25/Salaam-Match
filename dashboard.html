@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SalaamMatch - Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #2D5016;
+            --secondary: #E8F5E9;
+            --accent: #8BC34A;
+            --light: #F5F5F5;
+            --dark: #1E2A1A;
+            --text: #333333;
+            --male: #3498db;
+            --female: #e91e63;
+            --sidebar-width: 250px;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--primary);
+            color: white;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .sidebar-header {
+            padding: 1.5rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar-header i {
+            font-size: 1.8rem;
+        }
+        
+        .sidebar-header h2 {
+            font-size: 1.5rem;
+        }
+        
+        .sidebar-menu {
+            padding: 1rem 0;
+        }
+        
+        .menu-item {
+            padding: 0.8rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
+        }
+        
+        .menu-item:hover, .menu-item.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-left-color: var(--accent);
+        }
+        
+        .menu-item i {
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: 1rem;
+        }
+        
+        /* Top Bar */
+        .top-bar {
+            background-color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: var(--light);
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            width: 300px;
+        }
+        
+        .search-bar input {
+            background: transparent;
+            border: none;
+            outline: none;
+            width: 100%;
+            padding: 0.5rem;
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+        
+        /* Dashboard Cards */
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .matches .stat-icon {
+            background: rgba(52, 152, 219, 0.2);
+            color: var(--male);
+        }
+        
+        .messages .stat-icon {
+            background: rgba(233, 30, 99, 0.2);
+            color: var(--female);
+        }
+        
+        .views .stat-icon {
+            background: rgba(139, 195, 74, 0.2);
+            color: var(--accent);
+        }
+        
+        .stat-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.2rem;
+        }
+        
+        .stat-info p {
+            color: #666;
+        }
+        
+        /* Profile Completion */
+        .profile-completion {
+            margin-bottom: 1.5rem;
+        }
+        
+        .completion-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background: #eee;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background: var(--accent);
+            border-radius: 5px;
+            width: 65%; /* Example value */
+        }
+        
+        /* Matches Section */
+        .section-title {
+            margin-bottom: 1rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .view-all {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .matches-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .match-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        
+        .match-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .match-img {
+            height: 200px;
+            background: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 4rem;
+        }
+        
+        .match-info {
+            padding: 1rem;
+        }
+        
+        .match-name {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+        
+        .match-details {
+            color: #666;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .match-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .btn {
+            padding: 0.5rem 1rem;
+            borderRadius: 5px;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #7CB342;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #ddd;
+            color: #666;
+        }
+        
+        .btn-outline:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        /* Upcoming Meetings */
+        .meetings-list {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .meeting-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .meeting-item:last-child {
+            border-bottom: none;
+        }
+        
+        .meeting-date {
+            background: var(--secondary);
+            color: var(--primary);
+            padding: 0.8rem;
+            border-radius: 10px;
+            text-align: center;
+            margin-right: 1rem;
+            min-width: 60px;
+        }
+        
+        .meeting-date .day {
+            font-size: 1.2rem;
+            font-weight: bold;
+            display: block;
+        }
+        
+        .meeting-date .month {
+            font-size: 0.8rem;
+            display: block;
+        }
+        
+        .meeting-details {
+            flex: 1;
+        }
+        
+        .meeting-details h4 {
+            margin-bottom: 0.3rem;
+        }
+        
+        .meeting-details p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .meeting-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 70px;
+            }
+            
+            .sidebar-header h2, .menu-item span {
+                display: none;
+            }
+            
+            .sidebar-header {
+                justify-content: center;
+            }
+            
+            .main-content {
+                margin-left: 70px;
+            }
+            
+            .menu-item {
+                justify-content: center;
+                padding: 1rem;
+            }
+            
+            .menu-item i {
+                font-size: 1.2rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .matches-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .search-bar {
+                width: 200px;
+            }
+            
+            .user-name {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .sidebar {
+                width: 0;
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .sidebar.active {
+                width: 70px;
+            }
+            
+            .menu-toggle {
+                display: block;
+            }
+            
+            .top-bar {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+            
+            .search-bar {
+                width: 100%;
+            }
+        }
+        
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            margin-right: 1rem;
+        }
+        
+        @media (max-width: 576px) {
+            .menu-toggle {
+                display: block;
+            }
+        }
+        
+        .islamic-pattern {
+            background-color: var(--primary);
+            background-image: linear-gradient(30deg, var(--secondary) 12%, transparent 12.5%, transparent 87%, var(--secondary) 87.5%, var(--secondary)),
+                              linear-gradient(150deg, var(--secondary) 12%, transparent 12.5%, transparent 87%, var(--secondary) 87.5%, var(--secondary)),
+                              linear-gradient(30deg, var(--secondary) 12%, transparent 12.5%, transparent 87%, var(--secondary) 87.5%, var(--secondary)),
+                              linear-gradient(150deg, var(--secondary) 12%, transparent 12.5%, transparent 87%, var(--secondary) 87.5%, var(--secondary)),
+                              linear-gradient(60deg, var(--accent) 25%, transparent 25.5%, transparent 75%, var(--accent) 75%, var(--accent)),
+                              linear-gradient(60deg, var(--accent) 25%, transparent 25.5%, transparent 75%, var(--accent) 75%, var(--accent));
+            background-size: 40px 70px;
+            background-position: 0 0, 0 0, 20px 35px, 20px 35px, 0 0, 20px 35px;
+            height: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-mosque"></i>
+                <h2>SalaamMatch</h2>
+            </div>
+            <div class="islamic-pattern"></div>
+            <div class="sidebar-menu">
+                <div class="menu-item active">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-user"></i>
+                    <span>My Profile</span>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-heart"></i>
+                    <span>Matches</span>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-comments"></i>
+                    <span>Messages</span>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Meetings</span>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Locations</span>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-question-circle"></i>
+                    <span>Help</span>
+                </div>
+                <div class="menu-item">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search matches...">
+                </div>
+                <div class="user-profile">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-info">
+                        <div class="user-name">Ahmed Khan</div>
+                        <div class="user-status">Online</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Dashboard Stats -->
+            <div class="dashboard-cards">
+                <div class="card matches">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>24</h3>
+                            <p>Potential Matches</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card messages">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>8</h3>
+                            <p>New Messages</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card views">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>42</h3>
+                            <p>Profile Views</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Profile Completion -->
+            <div class="card profile-completion">
+                <div class="completion-header">
+                    <h3>Profile Completion</h3>
+                    <span>65%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress"></div>
+                </div>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem; color: #666;">Complete your profile to get better matches</p>
+            </div>
+            
+            <!-- Suggested Matches -->
+            <div class="section-title">
+                <h2><i class="fas fa-users"></i> Suggested Matches</h2>
+                <a href="#" class="view-all">View All</a>
+            </div>
+            
+            <div class="matches-grid">
+                <div class="match-card">
+                    <div class="match-img">
+                        <i class="fas fa-female"></i>
+                    </div>
+                    <div class="match-info">
+                        <h3 class="match-name">Aisha Mohammed</h3>
+                        <div class="match-details">
+                            <p>28 years • Doctor • Practicing</p>
+                            <p>London, UK</p>
+                        </div>
+                        <div class="match-actions">
+                            <button class="btn btn-primary"><i class="fas fa-heart"></i> Like</button>
+                            <button class="btn btn-outline"><i class="fas fa-times"></i> Pass</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="match-card">
+                    <div class="match-img">
+                        <i class="fas fa-female"></i>
+                    </div>
+                    <div class="match-info">
+                        <h3 class="match-name">Fatima Ahmed</h3>
+                        <div class="match-details">
+                            <p>26 years • Teacher • Moderate</p>
+                            <p>Birmingham, UK</p>
+                        </div>
+                        <div class="match-actions">
+                            <button class="btn btn-primary"><i class="fas fa-heart"></i> Like</button>
+                            <button class="btn btn-outline"><i class="fas fa-times"></i> Pass</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="match-card">
+                    <div class="match-img">
+                        <i class="fas fa-female"></i>
+                    </div>
+                    <div class="match-info">
+                        <h3 class="match-name">Zainab Khan</h3>
+                        <div class="match-details">
+                            <p>30 years • Architect • Practicing</p>
+                            <p>Manchester, UK</p>
+                        </div>
+                        <div class="match-actions">
+                            <button class="btn btn-primary"><i class="fas fa-heart"></i> Like</button>
+                            <button class="btn btn-outline"><i class="fas fa-times"></i> Pass</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Upcoming Meetings -->
+            <div class="section-title">
+                <h2><i class="fas fa-calendar-alt"></i> Upcoming Meetings</h2>
+                <a href="#" class="view-all">View All</a>
+            </div>
+            
+            <div class="meetings-list">
+                <div class="meeting-item">
+                    <div class="meeting-date">
+                        <span class="day">15</span>
+                        <span class="month">Oct</span>
+                    </div>
+                    <div class="meeting-details">
+                        <h4>Meeting with Aisha</h4>
+                        <p><i class="fas fa-map-marker-alt"></i> Peaceful Beans Cafe • 3:00 PM</p>
+                    </div>
+                    <div class="meeting-actions">
+                        <button class="btn btn-outline"><i class="fas fa-ellipsis-v"></i></button>
+                    </div>
+                </div>
+                
+                <div class="meeting-item">
+                    <div class="meeting-date">
+                        <span class="day">18</span>
+                        <span class="month">Oct</span>
+                    </div>
+                    <div class="meeting-details">
+                        <h4>Meeting with Fatima</h4>
+                        <p><i class="fas fa-map-marker-alt"></i> Islamic Cultural Center • 5:00 PM</p>
+                    </div>
+                    <div class="meeting-actions">
+                        <button class="btn btn-outline"><i class="fas fa-ellipsis-v"></i></button>
+                    </div>
+                </div>
+                
+                <div class="meeting-item">
+                    <div class="meeting-date">
+                        <span class="day">22</span>
+                        <span class="month">Oct</span>
+                    </div>
+                    <div class="meeting-details">
+                        <h4>Meeting with Zainab</h4>
+                        <p><i class="fas fa-map-marker-alt"></i> Garden View Restaurant • 2:00 PM</p>
+                    </div>
+                    <div class="meeting-actions">
+                        <button class="btn btn-outline"><i class="fas fa-ellipsis-v"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Authentication check
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in
+            if (localStorage.getItem('isLoggedIn') !== 'true') {
+                alert('Please log in to access your dashboard.');
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // Rest of your dashboard code...
+            
+            // Toggle sidebar on mobile
+            document.getElementById('menuToggle').addEventListener('click', function() {
+                document.getElementById('sidebar').classList.toggle('active');
+            });
+            
+            // Simulate loading data
+            // This would typically be API calls in a real application
+            console.log('Dashboard loaded');
+            
+            // Simulate notifications
+            setTimeout(function() {
+                // Would show actual notifications in a real app
+                console.log('You have new matches!');
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
